@@ -20,6 +20,11 @@
 		"get_al_catgry": "all category available",
 		"get_cat_byid": "category available",
 		"cat_n_f": "category not found"
+	},
+	"imageupload": {
+		"error1": "image uploading failed",
+		"error2":"no file uploaded",
+		"message1": "image uploaded successfully"
 	}
 
 	

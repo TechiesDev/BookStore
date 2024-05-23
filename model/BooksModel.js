@@ -4,7 +4,6 @@ const { Schema } = mongoose;
 
 // Book Schema
 const bookSchema = new Schema({
-  bookId: { type: String, unique: true, required: true },
   bookName: { type: String, required: true },
   title: { type: String},
   author: { type: String},

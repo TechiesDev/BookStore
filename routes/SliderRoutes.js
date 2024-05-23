@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const { upload, uploadImage } = require('../controllers/SliderController');
+const {uploadSliderImage} = require('../controllers/SliderController');
+const upload = require('../utils/Multer');
 
 
-router.post('/upload', upload.single('image'), uploadImage);
+router.post('/uploads', upload.single('img'), uploadSliderImage);
 
 
 module.exports = router;

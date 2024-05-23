@@ -3,7 +3,7 @@ const { Schema } = mongoose;
 
 
 const imageSchema = new Schema({
-  image: { type: String, required: true },
+  image: { type: String},
   
 });
 
