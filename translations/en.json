@@ -1,0 +1,27 @@
+{
+	"test":"successfully executed",
+	"signup": {
+		"username_exists": "email already exists",
+		"signup_success": "registration successfully"
+	},
+	"signin": {
+		"invalid_credentials": "Invalid email or password",
+		"invalid_pswrd": "Invalid password",
+		"signin_sucs": " login successfully"
+	},
+	"createbook": {
+		"crt_bok": "Create book successfully",
+		"get_al_bok": "all book available",
+		"get_on_bok": "book available",
+		"bok_n_f": "book not found"
+	},
+    "category": {
+		"crt_catgry": "Create category successfully",
+		"get_al_catgry": "all category available",
+		"get_cat_byid": "category available",
+		"cat_n_f": "category not found"
+	}
+
+	
+
+}
