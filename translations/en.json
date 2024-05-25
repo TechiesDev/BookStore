@@ -1,5 +1,4 @@
 {
-	"test":"successfully executed",
 	"signup": {
 		"username_exists": "email already exists",
 		"signup_success": "registration successfully"
@@ -15,7 +14,7 @@
 		"get_on_bok": "book available",
 		"bok_n_f": "book not found"
 	},
-    "category": {
+	"category": {
 		"crt_catgry": "Create category successfully",
 		"get_al_catgry": "all category available",
 		"get_cat_byid": "category available",
@@ -23,10 +22,29 @@
 	},
 	"imageupload": {
 		"error1": "image uploading failed",
-		"error2":"no file uploaded",
+		"error2": "no file uploaded",
 		"message1": "image uploaded successfully"
+	},
+	"forget": {
+		"invalid_user": "Invalid user",
+		"failed_send_otp": "Failed to send OTP",
+		"email_sent": "Email sent successfully"
+	},
+	"reset": {
+		"invalid_user": "User not found",
+		"invlid_otp": "Invalid or expired OTP",
+		"expired_otp": "OTP is expired",
+		"incorrect_otp": "OTP does not match",
+		"password_success": "Reset Password Successfully"
+	},
+	"validator": {
+		"name_empty": "Name should not be empty",
+		"invld_email": "Must be a valid email address",
+		"short_password": "Password must be at least 6 characters long",
+		"otp_format": "OTP must be of 6 digits",
+		"phon_num_rqird": "Phone number is required",
+		"phon_num_lngth": "Phone number must be 10 digits",
+		"invld_phone_num": "Invalid phone number",
+		"invalid_role": "role is not defined"
 	}
-
-	
-
 }

@@ -1,12 +1,15 @@
 const User = require('../model/UserModel');
 const { createToken } = require('../utils/Utils');
 const bcrypt = require('bcrypt');
+const crypto = require("crypto");
+const { generateResetPasswordMail, sendMail } = require("../utils/Nodemailer");
+const { v4: uuidv4 } = require('uuid');
 
 
 // Controller function to register a new admin
 const registerUser = async (req, res) => {
   try {
-    const {role,name, email, password, phone, address, } = req.body;
+    const {role,name, email, password, phoneNumber, address, } = req.body;
 
     // Check if the user already exists
     const existingUser = await User.findOne({email});
@@ -15,7 +18,7 @@ const registerUser = async (req, res) => {
     }
     
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new User({role,name, email, password: hashedPassword, phone, address,});
+    const newUser = new User({uuid: uuidv4(),role,name, email, password: hashedPassword, phoneNumber, address,});
     await newUser.save();
     const token = createToken(newUser.email, newUser.role);
 
@@ -49,8 +52,6 @@ const loginUser = async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 };
-
-
 
 
 // const getAllAdmins = async (req, res) => {
@@ -93,7 +94,7 @@ const loginUser = async (req, res) => {
 //         password: hashedPassword || undefined,
 //         name,
 //         address,
-//         phone,
+//         phoneNumber,
 //         role
 //       },
 //       { new: true, runValidators: true }
@@ -122,4 +123,70 @@ const loginUser = async (req, res) => {
 //   }
 // };
 
-module.exports = {registerUser,loginUser};
+
+const forgetPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: res.__('forget.invalid_user') });
+    }
+
+    const otp = crypto.randomInt(100000, 999999).toString();
+    const hashedOTP = await bcrypt.hash(otp, 10);
+    const tme = new Date();
+    tme.setMinutes(tme.getMinutes() + 10);
+
+    user.otp = hashedOTP;
+    user.timeExpire = tme;
+    await user.save();
+
+    const mailOptions = generateResetPasswordMail(email, otp);
+    await sendMail(mailOptions);
+
+    res.json({ message: res.__("forget.email_sent") });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+
+const resetPassword = async (req, res) => {
+  try {
+    const { email, password, otp } = req.body;
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).json({ message: res.__('reset.invalid_user') });
+    }
+    if (!user.otp) {
+      return res.status(403).json({ message: res.__('reset.invalid_otp') });
+    }
+    const otpMatch = await bcrypt.compare(otp, user.otp);
+    const isOtpExpired = new Date() > user.timeExpire;
+    
+    if (otpMatch && !isOtpExpired) {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      user.password = hashedPassword;
+      user.otp = null;
+      user.timeExpire = null;
+      await user.save();
+      return res.status(201).json({ message: res.__("reset.password_success") });
+    }
+
+    if (!otpMatch) {
+      return res.status(400).json({ message: res.__('reset.incorrect_otp') });
+    }
+    if (isOtpExpired) {
+      return res.status(400).json({ message: res.__('reset.expired_otp') });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+
+
+
+
+module.exports = {registerUser,loginUser,forgetPassword,resetPassword};

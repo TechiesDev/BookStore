@@ -4,11 +4,11 @@ const { Schema } = mongoose;
 
 // Book Schema
 const bookSchema = new Schema({
-  bookName: { type: String, required: true },
+  bookName: { type: String,required: true },
   title: { type: String},
   author: { type: String},
   genre: { type: String},
-  ISBN: { type: String, unique: true },
+  ISBN: { type: String, unique: true},
   price: { type: Number},
   description: { type: String},
   publisher: { type: String},
@@ -23,4 +23,3 @@ const bookSchema = new Schema({
 const Book = mongoose.model('Book', bookSchema);
 
 module.exports = Book;
-
