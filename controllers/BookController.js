@@ -78,7 +78,7 @@ const deleteBook = async (req, res) => {
   try {
     const book = await Book.findByIdAndDelete(req.params.id);
     if (book) {
-      res.json({ message: 'Book deleted successfully' });
+      res.json({ message: res.__('createbook.bok_delt') });
     } else {
       res.status(404).json({ message: res.__('createbook.bok_n_f') });
     }

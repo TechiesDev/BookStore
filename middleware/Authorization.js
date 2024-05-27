@@ -51,7 +51,31 @@ const authenticateToken = (req, res, next) => {
   });
 };
 
-module.exports = { isAuthenticated, isAdmin, authenticateToken };
+
+const isLogedIn = (req, res, next) => {
+  const token = req.headers.token;
+  if (token) {
+    jwt.verify(token, process.env.KEY, async (err, decodedToken) => {
+      if (err) {
+        return res.status(401).json({ message: "Not authorized" });
+      } else {
+        const user = await User.findById(decodedToken.id);
+        if (!user) {
+          return next();
+        }
+
+        req.user = user;
+        next();
+      }
+    });
+  } else {
+    return res
+      .status(401)
+      .json({ message: "Not authorized, token not available" });
+  }
+};
+
+module.exports = { isAuthenticated, isAdmin, authenticateToken,isLogedIn };
 
 
 

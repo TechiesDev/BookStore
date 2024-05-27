@@ -127,7 +127,8 @@ const loginUser = async (req, res) => {
 const forgetPassword = async (req, res) => {
   try {
     const { email } = req.body;
-    const user = await User.findOne({ email });
+    const user = await User.findOne({email: email });
+    
     if (!user) {
       return res.status(404).json({ message: res.__('forget.invalid_user') });
     }
@@ -137,6 +138,7 @@ const forgetPassword = async (req, res) => {
     const tme = new Date();
     tme.setMinutes(tme.getMinutes() + 10);
 
+    // Update only relevant fields for forget password
     user.otp = hashedOTP;
     user.timeExpire = tme;
     await user.save();
@@ -150,40 +152,26 @@ const forgetPassword = async (req, res) => {
   }
 };
 
-
 const resetPassword = async (req, res) => {
   try {
     const { email, password, otp } = req.body;
-
     const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(400).json({ message: res.__('reset.invalid_user') });
-    }
-    if (!user.otp) {
-      return res.status(403).json({ message: res.__('reset.invalid_otp') });
-    }
-    const otpMatch = await bcrypt.compare(otp, user.otp);
-    const isOtpExpired = new Date() > user.timeExpire;
-    
-    if (otpMatch && !isOtpExpired) {
-      const hashedPassword = await bcrypt.hash(password, 10);
-      user.password = hashedPassword;
-      user.otp = null;
-      user.timeExpire = null;
-      await user.save();
-      return res.status(201).json({ message: res.__("reset.password_success") });
+
+    if (!user || !user.otp || new Date() > user.timeExpire || !(await bcrypt.compare(otp, user.otp))) {
+      return res.status(400).json({ message: res.__('reset.invalid_credentials_or_expired') });
     }
 
-    if (!otpMatch) {
-      return res.status(400).json({ message: res.__('reset.incorrect_otp') });
-    }
-    if (isOtpExpired) {
-      return res.status(400).json({ message: res.__('reset.expired_otp') });
-    }
+    user.password = await bcrypt.hash(password, 10);
+    user.otp = null;
+    user.timeExpire = null;
+    await user.save();
+    
+    res.status(201).json({ message: res.__("reset.password_success") });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
+
 
 
 

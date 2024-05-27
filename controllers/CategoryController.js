@@ -24,7 +24,7 @@ const createCategoryBook = async (req, res) => {
 // Get all categories
 const getAllCategory = async (req, res) => {
   try {
-    const categories = await Category.find().populate('books');
+    const categories = await Category.find();
     res.json({categories,message: res.__('category.get_al_catgry')});
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -34,7 +34,7 @@ const getAllCategory = async (req, res) => {
 // Get category by ID
 const getCategoryById = async (req, res) => {
   try {
-    const category = await Category.findById(req.params.id).populate('books');
+    const category = await Category.findById(req.params.id);
     if (!category) return res.status(404).json({ message: res.__('category.cat_n_f') });
     res.json({category,message: res.__('category.get_cat_byid')});
   } catch (err) {

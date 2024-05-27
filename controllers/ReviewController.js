@@ -10,12 +10,12 @@ const createReview = async (req, res) => {
 
         const userExists = await User.findById(userId);
         if (!userExists) {
-            return res.status(404).send({ message: 'User not found' });
+            return res.status(404).send({ message: res.__('review.usr_nt_fnd') });
         };
         // Validate if book exists
         const bookExists = await Book.findById(bookId);
         if (!bookExists) {
-            return res.status(404).send({ message: 'Book not found' });
+            return res.status(404).send({ message: res.__('review.bok_nt_fnd')});
         }
 
         const newReview = new Review({
@@ -24,10 +24,9 @@ const createReview = async (req, res) => {
         });
 
         await newReview.save();
-        res.status(201).send({ message: 'Review created successfully' });
+        res.status(201).send({ message: res.__('review.rvew_sucs')});
     } catch (error) {
-        console.error('Error creating review:', error);
-        res.status(500).send({ message: 'Error creating review' });
+        res.status(500).send({ message: error.message  });
     }
 }
 
@@ -35,8 +34,8 @@ const createReview = async (req, res) => {
 const getReviewsForBook = async (req, res) => {
     try {
         const { bookId } = req.params;
-        const reviews = await Review.find({ book: bookId }).populate('user', 'name');
-        res.status(200).json(reviews);
+        const reviews = await Review.find({ book: bookId });
+        res.status(200).json({reviews,message: res.__('review.get_bok_rvew')});
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -50,14 +49,14 @@ const updateReview = async (req, res) => {
 
         const existingReview = await Review.findById(reviewId);
         if (!existingReview) {
-            return res.status(404).json({ message: 'Review not found' });
+            return res.status(404).json({ message: res.__('review.rvew_nt_fnd')});
         }
 
         existingReview.rating = rating;
         existingReview.review = review;
         await existingReview.save();
 
-        res.status(200).json({ message: 'Review updated successfully', review: existingReview });
+        res.status(200).json({ message: res.__('review.rvew_updt'), review: existingReview });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -70,10 +69,10 @@ const deleteReview = async (req, res) => {
 
         const existingReview = await Review.findByIdAndDelete(reviewId);
         if (!existingReview) {
-            return res.status(404).json({ message: 'Review not found' });
+            return res.status(404).json({ message: res.__('review.rvew_nt_fnd') });
         }
 
-        res.status(200).json({ message: 'Review deleted successfully' });
+        res.status(200).json({ message: res.__('review.rvew_delt') });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

@@ -12,7 +12,8 @@
 		"crt_bok": "Create book successfully",
 		"get_al_bok": "all book available",
 		"get_on_bok": "book available",
-		"bok_n_f": "book not found"
+		"bok_n_f": "book not found",
+		"bok_delt": "Book deleted successfully"
 	},
 	"category": {
 		"crt_catgry": "Create category successfully",
@@ -35,7 +36,8 @@
 		"invlid_otp": "Invalid or expired OTP",
 		"expired_otp": "OTP is expired",
 		"incorrect_otp": "OTP does not match",
-		"password_success": "Reset Password Successfully"
+		"password_success": "Reset Password Successfully",
+		"invalid_credentials_or_expired": "Invalid credentials or expired"
 	},
 	"validator": {
 		"name_empty": "Name should not be empty",
@@ -46,5 +48,21 @@
 		"phon_num_lngth": "Phone number must be 10 digits",
 		"invld_phone_num": "Invalid phone number",
 		"invalid_role": "role is not defined"
+	},
+	"order": {
+		"ordr_sucs": "Order created successfully",
+		"gtall_ordr": "Get all orders successfully",
+		"get_ordr": "Order get successfully",
+		"ordr_updt": "Order Update Successfully",
+		"ordr_nt_fnd": "Order not found"
+	},
+	"review": {
+		"rvew_sucs": "Review created successfully",
+		"get_bok_rvew": "Book review get successfully",
+		"rvew_updt": "Review updated successfully",
+		"rvew_delt": "Review deleted successfully",
+		"rvew_nt_fnd": "Review not found",
+		"usr_nt_fnd": "User not found",
+		"bok_nt_fnd": "Book not found"
 	}
 }

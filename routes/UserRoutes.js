@@ -10,7 +10,7 @@ router.post('/register',signupValidator,UserController.registerUser);
 router.post('/login',loginValidator,UserController.loginUser);
 
 // forget and reset password
-router.post("/forget",forgetValidator, UserController.forgetPassword);
+router.post("/forget",forgetValidator, UserController.forgetPassword); //
 router.patch("/reset",resetValidator, UserController.resetPassword);
 
 module.exports = router;

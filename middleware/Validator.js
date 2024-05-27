@@ -10,7 +10,7 @@ const valid = (req, res, next) => {
 
 }
 
-const errorMsg = (msg) => (_value,{req})=> req.__(msg);
+const errorMsg = (msg) => (_value, { req }) => req.__(msg);
 
 
 
@@ -20,8 +20,8 @@ const signupValidator = [
     body('email').notEmpty().isEmail().normalizeEmail().escape().trim().withMessage(errorMsg('validator.invld_email')),
 
     body('phoneNumber').notEmpty().withMessage(errorMsg('validator.phon_num_rqird'))
-    .isLength({ min: 10, max: 10 }).withMessage(errorMsg('validator.phon_num_lngth'))
-    .matches(/^[0-9]+$/).withMessage(errorMsg('validator.invld_phone_num')),
+        .isLength({ min: 10, max: 10 }).withMessage(errorMsg('validator.phon_num_lngth'))
+        .matches(/^[0-9]+$/).withMessage(errorMsg('validator.invld_phone_num')),
 
     body('password').notEmpty().isLength({ min: 6 }).withMessage(errorMsg('validator.short_password')),
     body('password').matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])[a-zA-Z\d!@#$%^&*]{6,}$/).withMessage("Password must contain at least one lowercase letter, one uppercase letter, one numeric digit, and one special character."),
@@ -35,7 +35,6 @@ const loginValidator = [
     body('password').notEmpty().withMessage("Fill the password").isLength({ min: 6 }).withMessage(errorMsg('validator.short_password')),
     valid
 ]
-
 const forgetValidator = [
     body('email').notEmpty().withMessage("Fill email").isEmail().normalizeEmail().escape().trim().withMessage(errorMsg('validator.invld_email')),
     valid
@@ -51,4 +50,4 @@ const resetValidator = [
 
 
 
-module.exports = {signupValidator,loginValidator,forgetValidator,resetValidator}
+module.exports = { signupValidator, loginValidator, forgetValidator, resetValidator }
