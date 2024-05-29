@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 
 // Category Schema
 const categorySchema = new Schema({
-  name: { type: String, required: true },
+  bookName: { type: String, required: true },
   title: { type: String},
   author: { type: String},
   genre: { type: String},
@@ -18,7 +18,7 @@ const categorySchema = new Schema({
   stock: { type: Number},
   coverImage: { type: String},
   bookId: [{ type: Schema.Types.ObjectId, ref: 'books'}],
-  subCategory: [{ type: Schema.Types.ObjectId, ref: 'books'}]
+  subCategory: [{ type: Schema.Types.ObjectId, ref: 'categories'}]
   });
 
 

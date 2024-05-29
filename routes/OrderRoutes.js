@@ -1,20 +1,23 @@
 const express = require('express');
 const router = express.Router();
 const orderController = require('../controllers/OrderController');
-const { isLogedIn } = require("../middleware/Authorization");
+const { authenticateUser,authenticateToken } = require('../middleware/Authorization');
 
-// Create a new order
-router.post('/bookorder',isLogedIn, orderController.createOrder);
+// User Order
+router.post('/createuserorder', authenticateUser, orderController.createOrder);
+router.get('/getall/:userid', authenticateUser, orderController.getAllOrdersForUser); //Only User Order
+router.get('/getuserorder/:orderid', authenticateUser, orderController.getOrderById);
 
-// Get all orders
-router.get('/bookorder',isLogedIn, orderController.getAllOrders);
+// Cancel Order
+router.patch('/cancelorder/:orderid', authenticateUser, orderController.cancelOrder);
 
-// Get order by ID
-router.get('/bookorder/:id',isLogedIn, orderController.getOrderById);
 
-// Update an order
-router.put('/bookorder/:id', isLogedIn, orderController.updateOrder);
-
+//Admin Order
+router.get('/getalluserorders', authenticateToken, orderController.getAllUserOrder);
+router.get('/getuserorders/:userid', authenticateToken, orderController.getUserById);
+router.patch('/admincancelorder/:userid/:orderid', authenticateToken, orderController.admincancelOrder);
 
 
 module.exports = router;
+
+

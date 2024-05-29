@@ -54,74 +54,74 @@ const loginUser = async (req, res) => {
 };
 
 
-// const getAllAdmins = async (req, res) => {
-//   try {
-//     const admins = await Admin.find();
-//     res.status(200).json(admins);
-//   } catch (error) {
-//     res.status(400).json({ message: error.message });
-//   }
-// };
+const getAllUser = async (req, res) => {
+  try {
+    const users = await User.find();
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
 
 
-// const getAdminById = async (req, res) => {
-//   try {
-//     const admin = await Admin.findById(req.params.id);
-//     if (!admin) {
-//       return res.status(404).json({ message: 'Admin not found' });
-//     }
-//     res.status(200).json(admin);
-//   } catch (error) {
-//     res.status(400).json({ message: error.message });
-//   }
-// };
+const getUserById = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
 
 
-// const updateAdminById = async (req, res) => {
-//   try {
-//     const { username, email, password, name, address, phone, role } = req.body;
+const updateUser = async (req, res) => {
+  try {
+    const { username, email, password, name, address, phoneNumber, role } = req.body;
 
-//     let hashedPassword;
-//     if (password) {
-//       hashedPassword = await bcrypt.hash(password, 10);
-//     }
+    let hashedPassword;
+    if (password) {
+      hashedPassword = await bcrypt.hash(password, 10);
+    }
 
-//     const updatedAdmin = await Admin.findByIdAndUpdate(
-//       req.params.id,
-//       {
-//         username,
-//         email,
-//         password: hashedPassword || undefined,
-//         name,
-//         address,
-//         phoneNumber,
-//         role
-//       },
-//       { new: true, runValidators: true }
-//     );
+    const updatedUser = await User.findByIdAndUpdate(
+      req.params.id,
+      {
+        username,
+        email,
+        password: hashedPassword || undefined,
+        name,
+        address,
+        phoneNumber,
+        role,
+      },
+      { new: true, runValidators: true }
+    );
 
-//     if (!updatedAdmin) {
-//       return res.status(404).json({ message: 'Admin not found' });
-//     }
+    if (!updatedUser) {
+      return res.status(404).json({ message: 'User not found' });
+    }
 
-//     res.status(200).json({ updatedAdmin, message: 'Admin updated successfully' });
-//   } catch (error) {
-//     res.status(400).json({ message: error.message });
-//   }
-// };
+    res.status(200).json({ updatedUser, message: 'User updated successfully' });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
 
 
-// const deleteAdminById = async (req, res) => {
-//   try {
-//     const deletedAdmin = await Admin.findByIdAndDelete(req.params.id);
-//     if (!deletedAdmin) {
-//       return res.status(404).json({ message: 'Admin not found' });
-//     }
-//     res.status(200).json({ message: 'Admin deleted successfully' });
-//   } catch (error) {
-//     res.status(400).json({ message: error.message });
-//   }
-// };
+const deleteUser = async (req, res) => {
+  try {
+    const deletedUser = await User.findByIdAndDelete(req.params.id);
+    if (!deletedUser) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.status(200).json({ message: 'User deleted successfully' });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
 
 
 const forgetPassword = async (req, res) => {
@@ -174,7 +174,12 @@ const resetPassword = async (req, res) => {
 
 
 
-
-
-
-module.exports = {registerUser,loginUser,forgetPassword,resetPassword};
+module.exports = {registerUser,
+                  loginUser,
+                  getAllUser,
+                  getUserById,
+                  updateUser,
+                  deleteUser,
+                  forgetPassword,
+                  resetPassword
+                };

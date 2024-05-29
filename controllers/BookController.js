@@ -5,7 +5,6 @@ const { createToken } = require('../utils/Utils');
 const createBook = async (req, res) => {
   try {
     const {
-      bookId,
       bookName,
       title,
       author,
@@ -22,14 +21,34 @@ const createBook = async (req, res) => {
       status,
     } = req.body;
 
-    // Create a new book instance
-    const newBook = new Book({bookId,bookName,title,author,genre,ISBN,price,description,publisher,publicationDate,pageCount,language,stock,coverImage,status,});
-
     
+    const existingBook = await Book.findOne({ ISBN });
+    if (existingBook) {
+      return res.status(400).json({ message: res.__('createbook.bok_isbn') });
+    }
+
+    // Create a new book instance
+    const newBook = new Book({
+      bookName,
+      title,
+      author,
+      genre,
+      ISBN,
+      price,
+      description,
+      publisher,
+      publicationDate,
+      pageCount,
+      language,
+      stock,
+      coverImage,
+      status,
+    });
+
     await newBook.save();
     const token = createToken(newBook);
 
-    res.status(201).json({token,newBook,message: res.__('createbook.crt_bok')});
+    res.status(201).json({ token, newBook, message: res.__('createbook.crt_bok') });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

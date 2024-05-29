@@ -13,13 +13,16 @@
 		"get_al_bok": "all book available",
 		"get_on_bok": "book available",
 		"bok_n_f": "book not found",
-		"bok_delt": "Book deleted successfully"
+		"bok_delt": "Book deleted successfully",
+		"bok_isbn": "Book with this ISBN already exists"
 	},
 	"category": {
 		"crt_catgry": "Create category successfully",
 		"get_al_catgry": "all category available",
 		"get_cat_byid": "category available",
-		"cat_n_f": "category not found"
+		"cat_n_f": "category not found",
+		"upd_cat": "category.upd_cat",
+		"del_cat": "category.del_cat"
 	},
 	"imageupload": {
 		"error1": "image uploading failed",

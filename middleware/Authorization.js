@@ -61,8 +61,9 @@ const isLogedIn = (req, res, next) => {
       } else {
         const user = await User.findById(decodedToken.id);
         if (!user) {
-          return next();
+          return res.status(401).json({ message: "User not found" });
         }
+        
 
         req.user = user;
         next();
@@ -75,7 +76,25 @@ const isLogedIn = (req, res, next) => {
   }
 };
 
-module.exports = { isAuthenticated, isAdmin, authenticateToken,isLogedIn };
+//User AuthenticateUser
+
+const authenticateUser = (req, res, next) => {
+  const token = req.headers['token'];
+  
+  if (!token) {
+    return res.status(401).json({ message: 'Unauthorized: No token provided' });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.KEY);
+    req.user = decoded; 
+    next();
+  } catch (error) {
+    res.status(401).json({ message: 'Unauthorized' });
+  }
+};
+
+module.exports = { isAuthenticated, isAdmin, authenticateToken,isLogedIn,authenticateUser };
 
 
 
@@ -85,33 +104,3 @@ module.exports = { isAuthenticated, isAdmin, authenticateToken,isLogedIn };
 
 
 
-
-
-
-
-// const jwt = require('jsonwebtoken');
-// require('dotenv').config();
-
-// const authenticateToken = (req, res, next) => {
-//     const { token } = req.headers;
-//     if (!token) {
-//         return res.status(401).json({ error: "Unauthorized: No token provided" });
-//     }
-
-//     jwt.verify(token, process.env.KEY, (err, decoded) => {
-//         if (err) {
-//             console.error(err);
-//             return res.status(403).json({ error: "Unauthorized: Invalid token" });
-//         }
-//         req.user = decoded; 
-
-//         // Check if the decoded token has an admin role
-//         if (decoded.role  === 'admin') {
-//             next();
-//         } else {
-//             return res.status(403).json({ error: "Unauthorized: You are not an admin" });
-//         }
-//     });
-// };
-
-// module.exports = { authenticateToken };
