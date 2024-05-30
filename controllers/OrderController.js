@@ -1,14 +1,11 @@
 const Order = require('../model/OrderModel');
-const { createToken } = require('../utils/Utils');
 
 // Create a new order
 const createOrder = async (req, res) => {
   try {
-    const { userId, books, totalPrice, shipping_address, payment_status, delivery_status } = req.body;
-    const order = new Order({ userId, books, totalPrice, shipping_address, payment_status, delivery_status, status: true });
+    const order = new Order(req.body);
     const savedOrder = await order.save();
-    const token = createToken(savedOrder);
-    res.status(201).json({ token, savedOrder });
+    res.status(201).json({ savedOrder });
   } catch (error) {
     res.status(500).json({ message: 'Failed to create order', error });
   }

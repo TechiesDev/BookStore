@@ -4,6 +4,7 @@ const { Schema } = mongoose;
 
 const orderSchema = new Schema({
   userId: { type: Schema.Types.ObjectId, ref: 'user', required: true },
+  orderId: { type: Schema.Types.ObjectId, ref: 'order'},
   books: [
     {
       book: { type: Schema.Types.ObjectId, ref: 'book', required: true },
@@ -12,9 +13,9 @@ const orderSchema = new Schema({
     }
   ],
   totalPrice: { type: Number, required: true },
-  shipping_address: {type: String, required: true},
-  payment_status: {type: String, required: true},
-  delivery_status: {type: String, required: true},
+  shippingAddress: { type: String, required: true },
+  paymentStatus: { type: String, required: true },
+  deliveryStatus: { type: String, required: true },
   orderDate: { type: Date, default: Date.now },
   status: { type: Boolean, default: 'Pending' }
 });
